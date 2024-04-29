@@ -40,8 +40,8 @@ frontend muyiwaayobami-tech-frontend
 
 backend muyiwaayobami-tech-backend
     balance roundrobin
-    server 500502-web-01 54.237.112.170:80 check
-    server 500502-web-02 34.224.6.2:80 check
+    server 500502-web-01 34.227.92.46:80 check
+    server 500502-web-02 34.202.234.151:80 check
 "
 
 # shellcheck disable=SC2154

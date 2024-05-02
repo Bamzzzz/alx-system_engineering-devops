@@ -35,17 +35,16 @@ defaults
 
 frontend muyiwaayobami-frontend
         bind *:80
-        mode http
-        http-request redirect scheme https code 301 unless { ssl_fc }
         http-request set-header X_Forwarded-Proto http
         default_backend muyiwaayobami-backend
 
 frontend muyiwaayobami-frontend-https
-        bind *:443 ssl crt /etc/haproxy/certs/muyiwaayobami.tech.pem
+        bind *:443 ssl crt /etc/haproxy/certs/www.muyiwaayobami.tech.pem
         http-request set-header X-Forwarded-Proto https
         default_backend muyiwaayobami-backend
 
 backend muyiwaayobami-backend
         balance roundrobin
+        redirect scheme https if !{ ssl_fc }
         server 500502-web-01 34.227.92.46:80 check
         server 500502-web-02 34.202.234.151:80 check

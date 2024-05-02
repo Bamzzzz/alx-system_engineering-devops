@@ -48,3 +48,4 @@ backend muyiwaayobami-backend
         redirect scheme https if !{ ssl_fc }
         server 500502-web-01 3.84.239.197:80 check
         server 500502-web-02 3.85.41.29:80 check
+	server 500502-lb-01 52.86.136.213:80 check

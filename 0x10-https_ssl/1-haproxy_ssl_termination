@@ -46,5 +46,5 @@ frontend muyiwaayobami-frontend-https
 backend muyiwaayobami-backend
         balance roundrobin
         redirect scheme https if !{ ssl_fc }
-        server 500502-web-01 100.25.33.118:80 check
-        server 500502-web-02 34.232.72.168:80 check
+        server 500502-web-01 3.84.239.197:80 check
+        server 500502-web-02 3.85.41.29:80 check

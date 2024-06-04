@@ -7,7 +7,7 @@ The service failed 100% of the time which if deployed like that, 100% of users w
 # Root Cause and Resolution:
 Root Cause: The root cause of the issue was identified as a misconfiguration in the server's firewall settings. The firewall was incorrectly configured to block incoming traffic, leading to the rejection of legitimate user requests
  
-# Resolution: The issue was resolved by promptly reconfiguring the firewall to allow incoming traffic. Additionally, measures were put in place to ensure proper configuration management to prevent similar incidents in the future.
+Resolution: The issue was resolved by promptly reconfiguring the firewall to allow incoming traffic. Additionally, measures were put in place to ensure proper configuration management to prevent similar incidents in the future.
  
 # Debugging Process
 Two apache2 processes - root and www-data - were properly running.

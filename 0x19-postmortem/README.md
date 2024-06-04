@@ -1,28 +1,15 @@
-Postmortem: Web Server Outage on the web stack debugging project 
-Issue Summary:
-Duration: June 1, 2024, 13:05 GMT
-Impact: The web server hosting our company's website experienced an outage, rendering the website inaccessible to users. Users were affected, experiencing either slow loading times or complete unavailability.
-The service failed 100% of the time which if deployed like that, 100% of users will experience a 500 internal server error.
-Root Cause and Resolution:
-Root Cause: The root cause of the issue was identified as a misconfiguration in the server's firewall settings. The firewall was incorrectly configured to block incoming traffic, leading to the rejection of legitimate user requests
- 
-Resolution: The issue was resolved by promptly reconfiguring the firewall to allow incoming traffic. Additionally, measures were put in place to ensure proper configuration management to prevent similar incidents in the future.
- 
-Debugging Process
-Two apache2 processes - root and www-data - were properly running.
-Looked in the sites-available folder of the /etc/apache2/ directory. Determined that the web server was serving content located in /var/www/html/.
-In one terminal, ran strace on the PID of the root Apache process. In another, curled the server. Expected great things... only to be disappointed. strace gave no useful information.
-Repeated step 3, except on the PID of the www-data process. Kept expectations lower this time... but was rewarded! strace revealed an -1 ENOENT (No such file or directory) error occurring upon an attempt to access the file /var/www/html/wp-includes/class-wp-locale.phpp.
-Looked through files in the /var/www/html/ directory one-by-one, using Vim pattern matching to try and locate the erroneous .phpp file extension. Located it in the wp-settings.php file. (Line 137, require_once( ABSPATH . WPINC . '/class-wp-locale.php' );).
-Removed the trailing p from the line.
-Tested another curl on the server. 200 A-ok!
-Wrote a Puppet manifest to automate fixing of the error.
- 
-Corrective and Preventative Measures:
-This outage was not a web server error, but an application error. To prevent such outages moving forward, please keep the following in mind.
-Test! Test test test. Test the application before deploying. This error would have arisen and could have been addressed earlier had the app been tested.
-Status monitoring. Enable some uptime-monitoring service such as UptimeRobot to alert instantly upon outage of the website.
-Regular audits of firewall configurations to ensure alignment with security policies.
-Implement automated monitoring for firewall rules to detect and alert on any unexpected changes.
-Conduct a comprehensive review of all server firewall configurations to identify and correct any potential misconfigurations.
-Develop and implement automated tests to verify the integrity of firewall rules after any configuration changes.
+# Postmortem
+# Background Context
+Any software system will eventually fail, and that failure can come stem from a wide range of possible factors: bugs, traffic spikes, security issues, hardware failures, natural disasters, human error… Failing is normal and failing is actually a great opportunity to learn and improve. Any great Software Engineer must learn from his/her mistakes to make sure that they won’t happen again. Failing is fine, but failing twice because of the same issue is not.
+
+A postmortem is a tool widely used in the tech industry. After any outage, the team(s) in charge of the system will write a summary that has 2 main goals:
+* To provide the rest of the company’s employees easy access to information detailing the cause of the outage. Often outages can have a huge impact on a company, so managers and executives have to understand what happened and how it will impact their work.
+* And to ensure that the root cause(s) of the outage has been discovered and that measures are taken to make sure it will be fixed.
+
+# Resources
+1. [Incident Report, also referred to as a Postmortem](https://sysadmincasts.com/episodes/20-how-to-write-an-incident-report-postmortem)
+2. [The importance of an incident postmortem process](https://www.atlassian.com/incident-management/postmortem)
+3. [What is an Incident Postmortem?](https://www.pagerduty.com/resources/learn/incident-postmortem/)
+
+# Tasks
+Tasks table
